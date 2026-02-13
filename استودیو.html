@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="fa-IR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MegaKiaEdit Studio - (سایت بصورت ازمایشی راه اندازی شده)نمونه کارها</title>
+    <link rel="icon" href="https://www.pngall.com/wp-content/uploads/15/Arthur-Morgan-PNG-Free-Image.png" type="image/png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* تم‌های مختلف */
+        :root {
+            /* تم تیره (پیش‌فرض - YouTube Dark) */
+            --primary: #ff0000;
+            --secondary: #282828;
+            --background: #0f0f0f;
+            --surface: #1f1f1f;
+            --surface-light: #2a2a2a;
+            --text: #ffffff;
+            --text-secondary: #aaaaaa;
+            --text-muted: #717171;
+            --like: #00ff00;
+            --dislike: #ff4444;
+            --border: #333333;
+            --hover: rgba(255, 255, 255, 0.1);
+            --shadow: rgba(0, 0, 0, 0.5);
+            --channel-bg: rgba(255, 255, 255, 0.05);
+        }
+        
+        [data-theme="light"] {
+            /* تم روشن (YouTube Light) */
+            --primary: #ff0000;
+            --secondary: #f9f9f9;
+            --background: #ffffff;
+            --surface: #f9f9f9;
+            --surface-light: #f0f0f0;
+            --text: #0f0f0f;
+            --text-secondary: #606060;
+            --text-muted: #909090;
+            --like: #065fd4;
+            --dislike: #ff4444;
+            --border: #e5e5e5;
+            --hover: rgba(0, 0, 0, 0.05);
+            --shadow: rgba(0, 0, 0, 0.1);
+            --channel-bg: rgba(0, 0, 0, 0.03);
+        }
+        
+        [data-theme="blue"] {
+            /* تم آبی تیره */
+            --primary: #3ea6ff;
+            --secondary: #0d253f;
+            --background: #0a1929;
+            --surface: #132f4c;
+            --surface-light: #1e3a5f;
+            --text: #e3f2fd;
+            --text-secondary: #90caf9;
+            --text-muted: #64b5f6;
+            --like: #4caf50;
+            --dislike: #f44336;
+            --border: #1e3a5f;
+            --hover: rgba(62, 166, 255, 0.1);
+            --shadow: rgba(0, 0, 0, 0.4);
+            --channel-bg: rgba(62, 166, 255, 0.05);
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+        }
+        
+        /* هدر بهبود یافته */
+        .header {
+            background: var(--surface);
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px var(--shadow);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .search-container {
+            flex: 1;
+            max-width: 600px;
+            position: relative;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 50px 12px 20px;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(255,0,0,0.3);
+        }
+        
+        .search-btn {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .theme-switcher {
+            display: flex;
+            gap: 5px;
+            background: var(--surface-light);
+            padding: 5px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+        
+        .theme-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .btn-icon:hover {
+            background: var(--hover);
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* محتوای اصلی */
+        .main-container {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+        
+        /* پلیر ویدیو پیشرفته */
+        .video-player {
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+        
+        .video-player video {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .player-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-player:hover .player-controls {
+            opacity: 1;
+        }
+        
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 50%;
+        }
+        
+        .control-btn:hover {
+            color: var(--primary);
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .control-dropdown {
+            position: relative;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 0;
+            min-width: 150px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+        
+        .control-dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 8px 20px;
+            color: var(--text);
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: var(--hover);
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.1s ease;
+            border-radius: 3px;
+        }
+        
+        .time-display {
+            color: white;
+            font-size: 0.9rem;
+            min-width: 100px;
+            text-align: center;
+        }
+        
+        /* اطلاعات ویدیو */
+        .video-info-section {
+            background: var(--surface);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+        
+        .video-title-main {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        
+        .video-stats-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .views-date {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        .video-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+            padding: 10px 18px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .action-btn:hover {
+            background: var(--hover);
+        }
+        
+        .action-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* سیستم لایک و دیسلایک پیشرفته */
+        .like-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--surface);
+            border-radius: 15px;
+            border: 1px solid var(--border);
+        }
+        
+        .like-btn, .dislike-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .like-btn:hover {
+            background: rgba(0, 255, 0, 0.1);
+            color: var(--like);
+            transform: translateY(-2px);
+        }
+        
+        .dislike-btn:hover {
+            background: rgba(255, 0, 0, 0.1);
+            color: var(--dislike);
+            transform: translateY(-2px);
+        }
+        
+        .like-btn.active {
+            background: rgba(0, 255, 0, 0.2);
+            color: var(--like);
+            box-shadow: 0 5px 15px rgba(0,255,0,0.2);
+        }
+        
+        .dislike-btn.active {
+            background: rgba(255, 0, 0, 0.2);
+            color: var(--dislike);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.2);
+        }
+        
+        .like-count, .dislike-count {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .likes-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            margin: 0 20px;
+        }
+        
+        .likes-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--like), var(--dislike));
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .likes-percentage {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: rgba(0,0,0,0.8);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        /* کانال ویدیو */
+        .channel-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: var(--channel-bg);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+        
+        .channel-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .channel-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
+        
+        .channel-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .channel-details h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .channel-details p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .subscribe-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .subscribe-btn:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+        }
+        
+        .subscribe-btn.subscribed {
+            background: var(--surface-light);
+            color: var(--text);
+        }
+        
+        /* سیستم کامنت */
+        .comments-section {
+            background: var(--surface);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+        
+        .comments-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .comments-count {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .sort-comments {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .add-comment {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .comment-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .comment-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .comment-input-container {
+            flex: 1;
+        }
+        
+        .comment-input {
+            width: 100%;
+            padding: 15px;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .comment-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .comment-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .comment-btn {
+            padding: 10px 25px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .comment-btn:hover {
+            background: #cc0000;
+        }
+        
+        .comment-btn.cancel {
+            background: var(--surface-light);
+            color: var(--text);
+        }
+        
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .comment-item {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .comment-text {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .comment-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .comment-like {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .comment-like:hover {
+            color: var(--like);
+        }
+        
+        /* شبکه ویدیوها */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .video-card {
+            background: var(--surface);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+        
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px var(--shadow);
+            border-color: var(--primary);
+        }
+        
+        .thumbnail {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .video-card:hover .thumbnail img {
+            transform: scale(1.1);
+        }
+        
+        .duration {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,0,0,0.8);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .video-card:hover .play-overlay {
+            opacity: 1;
+        }
+        
+        .play-overlay i {
+            color: white;
+            font-size: 1.5rem;
+            margin-left: 3px;
+        }
+        
+        .video-info {
+            padding: 20px;
+        }
+        
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        
+        .video-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+        
+        .stat.liked {
+            color: var(--like);
+        }
+        
+        .stat.disliked {
+            color: var(--dislike);
+        }
+        
+        /* سایدبار پیشرفته */
+        .sidebar {
+            background: var(--surface);
+            border-radius: 15px;
+            padding: 25px;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+            border: 1px solid var(--border);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 35px;
+        }
+        
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .sidebar-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-link:hover, .sidebar-link.active {
+            background: var(--hover);
+            color: var(--primary);
+        }
+        
+        .sidebar-link i {
+            width: 24px;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .stat-card {
+            background: var(--surface-light);
+            padding: 20px 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        /* محبوب‌ترین‌ها */
+        .top-videos {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .top-video-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        
+        .top-video-item:hover {
+            background: var(--hover);
+            border-color: var(--primary);
+            transform: translateX(-5px);
+        }
+        
+        .top-video-thumb {
+            width: 70px;
+            height: 50px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+        
+        .top-video-info {
+            flex: 1;
+        }
+        
+        .top-video-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+        }
+        
+        .top-video-views {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        
+        /* ویدیوهای پیشنهادی */
+        .recommended-videos {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .recommended-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .recommended-item:hover {
+            background: var(--hover);
+        }
+        
+        .recommended-thumb {
+            width: 120px;
+            height: 70px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+        }
+        
+        .recommended-info {
+            flex: 1;
+        }
+        
+        .recommended-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+        }
+        
+        .recommended-channel {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+        
+        .recommended-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        
+        /* فوتر */
+        .footer {
+            background: var(--surface);
+            padding: 50px 20px 30px;
+            margin-top: 60px;
+            border-top: 2px solid var(--primary);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(-5px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .footer-bottom p {
+            margin-bottom: 8px;
+        }
+        
+        .socials {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .socials a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: var(--background);
+            border-radius: 50%;
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            font-size: 1.2rem;
+        }
+        
+        .socials a:hover {
+            background: var(--primary);
+            color: var(--text);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+        }
+        
+        /* ریسپانسیو */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+            
+            .video-player video {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 10px 0;
+            }
+            
+            .nav-left, .nav-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .search-container {
+                order: 3;
+                margin: 10px 0;
+                max-width: 100%;
+            }
+            
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .like-section {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .likes-bar {
+                margin: 10px 0;
+            }
+            
+            .video-player video {
+                height: 300px;
+            }
+            
+            .video-stats-main {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .video-actions {
+                flex-wrap: wrap;
+            }
+            
+            .channel-section {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .video-player video {
+                height: 200px;
+            }
+            
+            .action-btn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .like-btn, .dislike-btn {
+                padding: 8px 15px;
+            }
+            
+            .sidebar {
+                padding: 15px;
+            }
+        }
+        
+        /* انیمیشن‌ها */
+        @keyframes likeAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+        
+        .like-animation {
+            animation: likeAnimation 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .video-card, .comment-item, .recommended-item {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .sidebar-link {
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        /* اسکلتون لودینگ */
+        .skeleton {
+            background: linear-gradient(90deg, var(--surface-light) 25%, var(--surface) 50%, var(--surface-light) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 8px;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* اسکرول بار سفارشی */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--surface);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-secondary);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- هدر -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="#" class="logo">
+                    <i class="fab fa-youtube"></i>
+                    MegaKiaEdit(سایت بصورت ازمایشی راه اندازی شده است)
+                </a>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="جستجو در ویدیوها...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="nav-right">
+                <div class="theme-switcher" id="themeSwitcher">
+                    <button class="theme-btn active" data-theme="dark" title="تم تیره">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="theme-btn" data-theme="light" title="تم روشن">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <button class="theme-btn" data-theme="blue" title="تم آبی">
+                        <i class="fas fa-palette"></i>
+                    </button>
+                </div>
+                
+                <button class="btn-icon">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <div class="user-avatar">
+                    <img src="https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg" alt="پروفایل کاربر">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- محتوای اصلی -->
+    <div class="main-container">
+        <!-- بخش اصلی -->
+        <div class="main-content">
+            <!-- پلیر ویدیو -->
+            <div class="video-player" id="videoPlayer" style="display: none;">
+                <video id="mainVideo" controls>
+                    مرورگر شما از تگ ویدیو پشتیبانی نمی‌کند
+                </video>
+                <div class="player-controls">
+                    <button class="control-btn" onclick="togglePlay()">
+                        <i class="fas fa-play" id="playIcon"></i>
+                    </button>
+                    <div class="progress-bar" onclick="seekVideo(event)">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                    <div class="time-display">
+                        <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <button class="control-btn" onclick="toggleMute()">
+                            <i class="fas fa-volume-up" id="volumeIcon"></i>
+                        </button>
+                        
+                        <div class="control-dropdown">
+                            <button class="control-btn">
+                                <i class="fas fa-cog"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item" onclick="changePlaybackSpeed(0.5)">سرعت: 0.5x</a>
+                                <a href="#" class="dropdown-item" onclick="changePlaybackSpeed(1)">سرعت: عادی</a>
+                                <a href="#" class="dropdown-item" onclick="changePlaybackSpeed(1.5)">سرعت: 1.5x</a>
+                                <a href="#" class="dropdown-item" onclick="changePlaybackSpeed(2)">سرعت: 2x</a>
+                            </div>
+                        </div>
+                        
+                        <button class="control-btn" onclick="toggleFullscreen()">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- اطلاعات ویدیو -->
+            <div class="video-info-section" id="videoInfoSection" style="display: none;">
+                <h1 class="video-title-main" id="videoTitleMain">عنوان ویدیو</h1>
+                
+                <div class="video-stats-main">
+                    <div class="views-date" id="viewsDate">0 بازدید • 0 روز پیش</div>
+                    <div class="video-actions">
+                        <button class="action-btn" onclick="likeVideo()">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span id="likeBtnText">لایک</span>
+                        </button>
+                        <button class="action-btn" onclick="dislikeVideo()">
+                            <i class="fas fa-thumbs-down"></i>
+                            <span id="dislikeBtnText">دیسلایک</span>
+                        </button>
+                        <button class="action-btn" onclick="saveToWatchLater()">
+                            <i class="fas fa-clock"></i>
+                            ذخیره
+                        </button>
+                        <button class="action-btn" onclick="shareVideo()">
+                            <i class="fas fa-share"></i>
+                            اشتراک
+                        </button>
+                        <button class="action-btn" onclick="reportVideo()">
+                            <i class="fas fa-flag"></i>
+                            گزارش
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- سیستم لایک و دیسلایک -->
+                <div class="like-section" id="likeSection" style="display: none;">
+                    <button class="like-btn" id="likeBtn" onclick="likeVideo()">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span class="like-count" id="likeCount">0</span>
+                    </button>
+                    
+                    <div class="likes-bar">
+                        <div class="likes-progress" id="likesProgress"></div>
+                        <div class="likes-percentage" id="likesPercentage">0%</div>
+                    </div>
+                    
+                    <button class="dislike-btn" id="dislikeBtn" onclick="dislikeVideo()">
+                        <i class="fas fa-thumbs-down"></i>
+                        <span class="dislike-count" id="dislikeCount">0</span>
+                    </button>
+                </div>
+                
+                <!-- بخش کانال -->
+                <div class="channel-section">
+                    <div class="channel-info">
+                        <div class="channel-avatar">
+                            <img src="https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg" alt="کانال MegaKiaEdit">
+                        </div>
+                        <div class="channel-details">
+                            <h3>MegaKiaEdit Studio</h3>
+                            <p>10K مشترک • 50 ویدیو</p>
+                        </div>
+                    </div>
+                    <button class="subscribe-btn" id="subscribeBtn" onclick="toggleSubscribe()">
+                        مشترک شوید
+                    </button>
+                </div>
+                
+                <!-- سیستم کامنت -->
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-count">
+                            <i class="fas fa-comments"></i>
+                            <span id="commentsCount">0</span> دیدگاه
+                        </div>
+                        <div class="sort-comments">
+                            <i class="fas fa-sort"></i>
+                            مرتب‌سازی بر اساس:
+                            <select id="sortComments" onchange="sortComments()">
+                                <option value="newest">جدیدترین</option>
+                                <option value="popular">محبوب‌ترین</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="add-comment">
+                        <div class="comment-avatar">
+                            <img src="https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg" alt="پروفایل شما">
+                        </div>
+                        <div class="comment-input-container">
+                            <textarea class="comment-input" id="commentInput" placeholder="دیدگاه خود را بنویسید..."></textarea>
+                            <div class="comment-actions">
+                                <button class="comment-btn cancel" onclick="cancelComment()">لغو</button>
+                                <button class="comment-btn" onclick="addComment()">ارسال</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment-list" id="commentList">
+                        <!-- کامنت‌ها به صورت داینامیک اضافه می‌شوند -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- شبکه ویدیوها -->
+            <div class="videos-section">
+                <h2 style="margin-bottom: 20px; color: var(--primary); font-size: 1.8rem;">ویدیوهای نمونه کارها</h2>
+                <div class="videos-grid" id="videosGrid">
+                    <!-- ویدیوها به صورت داینامیک اضافه می‌شوند -->
+                </div>
+            </div>
+        </div>
+
+        <!-- سایدبار -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">منو</h3>
+                <ul class="sidebar-links">
+                    <li><a href="#" class="sidebar-link active"><i class="fas fa-home"></i> صفحه اصلی</a></li>
+                    <li><a href="#" class="sidebar-link"><i class="fas fa-fire"></i> محبوب‌ترین‌ها</a></li>
+                    <li><a href="#" class="sidebar-link"><i class="fas fa-history"></i> تماشای بعدی</a></li>
+                    <li><a href="#" class="sidebar-link"><i class="fas fa-thumbs-up"></i> ویدیوهای پسندیده</a></li>
+                    <li><a href="#" class="sidebar-link"><i class="fas fa-download"></i> دانلودها</a></li>
+                    <li><a href="#" class="sidebar-link"><i class="fas fa-film"></i> کانال‌های شما</a></li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">آمار کانال</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalVideos">0</div>
+                        <div class="stat-label">ویدیوها</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalViews">0</div>
+                        <div class="stat-label">بازدید</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalLikes">0</div>
+                        <div class="stat-label">لایک‌ها</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="engagementRate">0%</div>
+                        <div class="stat-label">میزان تعامل</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">محبوب‌ترین‌ها</h3>
+                <div class="top-videos" id="topVideos">
+                    <!-- ویدیوهای محبوب -->
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">پیشنهاد شده برای شما</h3>
+                <div class="recommended-videos" id="recommendedVideos">
+                    <!-- ویدیوهای پیشنهادی -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- فوتر -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>دسترسی سریع</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-home"></i> صفحه اصلی</a></li>
+                    <li><a href="#"><i class="fas fa-video"></i> نمونه کارها</a></li>
+                    <li><a href="#"><i class="fas fa-shopping-cart"></i> فروشگاه</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i> سوالات متداول</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>خدمات</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-edit"></i> ادیت حرفه‌ای</a></li>
+                    <li><a href="#"><i class="fas fa-film"></i> موشن گرافیک</a></li>
+                    <li><a href="#"><i class="fas fa-palette"></i> رنگ‌بندی</a></li>
+                    <li><a href="#"><i class="fas fa-graduation-cap"></i> آموزش</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>ارتباط با ما</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fab fa-telegram"></i> تلگرام</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> اینستاگرام</a></li>
+                    <li><a href="#"><i class="fab fa-youtube"></i> یوتیوب</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> ایمیل</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 تمامی حقوق برای بنیامین کیا حیرتی محفوظ است.</p>
+            <p>طراحی شده توسط تیم تک پارسا - توسط محمد جعفر افرازه</p>
+            
+            <div class="socials">
+                <a href="https://t.me/Tech_parsa" target="_blank"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // داده‌های نمونه برای ویدیوها
+        let sampleVideos = [
+            {
+                id: 1,
+                title: "ادیت اکشن حرفه‌ای - پروژه شماره ۱",
+                thumbnail: "https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4",
+                duration: "2:45",
+                views: "1.2K",
+                likes: 124,
+                dislikes: 8,
+                userLike: null,
+                date: "2 روز پیش",
+                channel: "MegaKiaEdit Studio",
+                channelAvatar: "https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg",
+                description: "ادیت حرفه‌ای ویدیو اکشن با افکت‌های پیشرفته و ترانزیشن‌های خلاقانه"
+            },
+            {
+                id: 2,
+                title: "ترانزیشن خلاقانه - نمونه کار ۲",
+                thumbnail: "https://i.pinimg.com/736x/40/ee/56/40ee567f8cf4a1719428e8bc5c1632a5.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-highway-through-a-mountain-34561-large.mp4",
+                duration: "1:30",
+                views: "890",
+                likes: 89,
+                dislikes: 3,
+                userLike: null,
+                date: "1 هفته پیش",
+                channel: "MegaKiaEdit Studio",
+                channelAvatar: "https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg",
+                description: "ترانزیشن‌های خلاقانه و مدرن برای ویدیوهای حرفه‌ای"
+            },
+            {
+                id: 3,
+                title: "رنگ‌بندی سینمایی - ادیت پیشرفته",
+                thumbnail: "https://i.pinimg.com/736x/7c/81/ad/7c81ad64cb76c8748b0d547c40dcb984.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-pink-and-blue-ink-1192-large.mp4",
+                duration: "3:15",
+                views: "2.1K",
+                likes: 210,
+                dislikes: 12,
+                userLike: null,
+                date: "3 روز پیش",
+                channel: "MegaKiaEdit Studio",
+                channelAvatar: "https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg",
+                description: "رنگ‌بندی سینمایی و حرفه‌ای با استفاده از LUT های کالیبره شده"
+            },
+            {
+                id: 4,
+                title: "موشن گرافیک تبلیغاتی - پروژه تجاری",
+                thumbnail: "https://i.pinimg.com/736x/55/8e/8c/558e8c8b9e6e6d3e5d8c9b8a7f6e5d4c.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-white-floating-feather-1183-large.mp4",
+                duration: "1:45",
+                views: "1.5K",
+                likes: 156,
+                dislikes: 5,
+                userLike: null,
+                date: "5 روز پیش",
+                channel: "MegaKiaEdit Studio",
+                channelAvatar: "https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg",
+                description: "موشن گرافیک تبلیغاتی برای برندهای تجاری با انیمیشن‌های روان"
+            },
+            {
+                id: 5,
+                title: "ویدیو اینترو جذاب - نمونه ادیت",
+                thumbnail: "https://i.pinimg.com/736x/12/34/56/1234567890abcdef1234567890abcdef.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-abstract-geometric-shapes-1151-large.mp4",
+                duration: "0:45",
+                views: "3.2K",
+                likes: 320,
+                dislikes: 15,
+                userLike: null,
+                date: "1 ماه پیش",
+                channel: "MegaKiaEdit Studio",
+                channelAvatar: "https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg",
+                description: "اینتروهای جذاب و حرفه‌ای برای کانال‌های یوتیوب و شبکه‌های اجتماعی"
+            },
+            {
+                id: 6,
+                title: "ادیت ویدیو موزیکال - پروژه آهنگ",
+                thumbnail: "https://i.pinimg.com/736x/ab/cd/ef/abcdef1234567890abcdef1234567890.jpg",
+                videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-urban-city-traffic-at-night-34565-large.mp4",
+                duration: "4:20",
+                views: "5.7K",
+                likes: 580,
+                dislikes: 25,
+                userLike: null,
+                date: "2 ماه پیش",
+                channel: "MegaKiaEdit Studio",
+                channelAvatar: "https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg",
+                description: "ادیت ویدیو موزیکال هماهنگ با ریتم آهنگ و افکت‌های صوتی"
+            }
+        ];
+
+        // داده‌های کامنت‌ها
+        let sampleComments = [
+            {
+                id: 1,
+                videoId: 1,
+                author: "علی محمدی",
+                avatar: "https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg",
+                text: "ادیت واقعا حرفه‌ای بود! لطفا آموزشش رو هم بذارید.",
+                likes: 24,
+                userLiked: false,
+                date: "1 روز پیش"
+            },
+            {
+                id: 2,
+                videoId: 1,
+                author: "سارا کریمی",
+                avatar: "https://i.pinimg.com/736x/40/ee/56/40ee567f8cf4a1719428e8bc5c1632a5.jpg",
+                text: "ترانزیشن بین صحنه‌ها واقعا نرم و حرفه‌ای بود.",
+                likes: 18,
+                userLiked: false,
+                date: "2 روز پیش"
+            },
+            {
+                id: 3,
+                videoId: 3,
+                author: "رضا احمدی",
+                avatar: "https://i.pinimg.com/736x/7c/81/ad/7c81ad64cb76c8748b0d547c40dcb984.jpg",
+                text: "رنگ‌بندی عالی! دقیقا حس فیلم‌های هالیوودی رو داشت.",
+                likes: 32,
+                userLiked: false,
+                date: "4 روز پیش"
+            }
+        ];
+
+        // داده‌های کاربر
+        let userData = {
+            subscribed: false,
+            watchLater: [],
+            likedVideos: [],
+            theme: 'dark'
+        };
+
+        let currentVideoId = null;
+        let isPlaying = false;
+        let isMuted = false;
+        let playbackSpeed = 1;
+        let isSubscribed = false;
+
+        // سیستم تم
+        function initTheme() {
+            const savedTheme = localStorage.getItem('megaEditTheme');
+            if (savedTheme) {
+                userData.theme = savedTheme;
+            }
+            
+            setTheme(userData.theme);
+            
+            // فعال کردن دکمه تم فعلی
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            themeButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.theme === userData.theme) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            userData.theme = theme;
+            localStorage.setItem('megaEditTheme', theme);
+        }
+
+        // تغییر تم
+        document.getElementById('themeSwitcher').addEventListener('click', function(e) {
+            if (e.target.classList.contains('theme-btn') || e.target.parentElement.classList.contains('theme-btn')) {
+                const themeBtn = e.target.classList.contains('theme-btn') ? e.target : e.target.parentElement;
+                const theme = themeBtn.dataset.theme;
+                
+                setTheme(theme);
+                
+                // آپدیت وضعیت دکمه‌ها
+                document.querySelectorAll('.theme-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                themeBtn.classList.add('active');
+            }
+        });
+
+        // نمایش ویدیوها
+        function renderVideos() {
+            const videosGrid = document.getElementById('videosGrid');
+            const totalVideos = document.getElementById('totalVideos');
+            const totalViews = document.getElementById('totalViews');
+            const totalLikes = document.getElementById('totalLikes');
+            const engagementRate = document.getElementById('engagementRate');
+            const topVideos = document.getElementById('topVideos');
+            const recommendedVideos = document.getElementById('recommendedVideos');
+            
+            videosGrid.innerHTML = '';
+            let totalViewsCount = 0;
+            let totalLikesCount = 0;
+            let totalDislikesCount = 0;
+            
+            // مرتب کردن ویدیوها بر اساس لایک
+            const sortedVideos = [...sampleVideos].sort((a, b) => b.likes - a.likes);
+            
+            // نمایش ویدیوهای اصلی
+            sampleVideos.forEach(video => {
+                const viewsNumber = parseInt(video.views.replace('K', '000').replace('.', ''));
+                totalViewsCount += viewsNumber;
+                totalLikesCount += video.likes;
+                totalDislikesCount += video.dislikes;
+                
+                const likePercentage = video.likes + video.dislikes > 0 ? 
+                    Math.round((video.likes / (video.likes + video.dislikes)) * 100) : 0;
+                
+                const videoCard = `
+                    <div class="video-card" onclick="playVideo(${video.id})">
+                        <div class="thumbnail">
+                            <img src="${video.thumbnail}" alt="${video.title}" loading="lazy">
+                            <div class="duration">${video.duration}</div>
+                            <div class="play-overlay">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">${video.title}</div>
+                            <div class="video-meta">
+                                <span>${video.views} بازدید</span>
+                                <span>${video.date}</span>
+                            </div>
+                            <div class="video-stats">
+                                <div class="stat ${video.userLike === true ? 'liked' : ''}">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    ${video.likes}
+                                </div>
+                                <div class="stat ${video.userLike === false ? 'disliked' : ''}">
+                                    <i class="fas fa-thumbs-down"></i>
+                                    ${video.dislikes}
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-chart-bar"></i>
+                                    ${likePercentage}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                videosGrid.innerHTML += videoCard;
+            });
+            
+            // نمایش ویدیوهای محبوب در سایدبار
+            topVideos.innerHTML = '';
+            sortedVideos.slice(0, 3).forEach(video => {
+                const topVideoItem = `
+                    <div class="top-video-item" onclick="playVideo(${video.id})">
+                        <img src="${video.thumbnail}" alt="${video.title}" class="top-video-thumb" loading="lazy">
+                        <div class="top-video-info">
+                            <div class="top-video-title">${video.title}</div>
+                            <div class="top-video-views">
+                                <i class="fas fa-thumbs-up"></i> ${video.likes} لایک
+                            </div>
+                        </div>
+                    </div>
+                `;
+                topVideos.innerHTML += topVideoItem;
+            });
+            
+            // نمایش ویدیوهای پیشنهادی
+            recommendedVideos.innerHTML = '';
+            sortedVideos.slice(0, 5).forEach(video => {
+                const recommendedItem = `
+                    <div class="recommended-item" onclick="playVideo(${video.id})">
+                        <img src="${video.thumbnail}" alt="${video.title}" class="recommended-thumb" loading="lazy">
+                        <div class="recommended-info">
+                            <div class="recommended-title">${video.title}</div>
+                            <div class="recommended-channel">${video.channel}</div>
+                            <div class="recommended-meta">${video.views} بازدید • ${video.date}</div>
+                        </div>
+                    </div>
+                `;
+                recommendedVideos.innerHTML += recommendedItem;
+            });
+            
+            // آپدیت آمار
+            totalVideos.textContent = sampleVideos.length;
+            totalViews.textContent = (totalViewsCount / 1000).toFixed(1) + 'K';
+            totalLikes.textContent = (totalLikesCount / 1000).toFixed(1) + 'K';
+            
+            const totalEngagement = totalLikesCount + totalDislikesCount;
+            const engagementPercentage = totalViewsCount > 0 ? 
+                Math.round((totalEngagement / totalViewsCount) * 100) : 0;
+            engagementRate.textContent = engagementPercentage + '%';
+        }
+
+        // پخش ویدیو
+        function playVideo(videoId) {
+            const video = sampleVideos.find(v => v.id === videoId);
+            const videoPlayer = document.getElementById('videoPlayer');
+            const mainVideo = document.getElementById('mainVideo');
+            const likeSection = document.getElementById('likeSection');
+            const videoInfoSection = document.getElementById('videoInfoSection');
+            const videoTitleMain = document.getElementById('videoTitleMain');
+            const viewsDate = document.getElementById('viewsDate');
+            
+            currentVideoId = videoId;
+            
+            // نمایش بخش‌های ویدیو
+            videoPlayer.style.display = 'block';
+            likeSection.style.display = 'flex';
+            videoInfoSection.style.display = 'block';
+            
+            // تنظیم ویدیو
+            mainVideo.src = video.videoUrl;
+            mainVideo.load();
+            
+            // آپدیت اطلاعات ویدیو
+            videoTitleMain.textContent = video.title;
+            viewsDate.textContent = `${video.views} بازدید • ${video.date}`;
+            
+            // آپدیت سیستم لایک
+            updateLikeSection(video);
+            
+            // بارگذاری کامنت‌های ویدیو
+            loadComments(videoId);
+            
+            // اسکرول به پلیر
+            videoPlayer.scrollIntoView({ behavior: 'smooth' });
+            
+            // پخش خودکار ویدیو
+            setTimeout(() => {
+                mainVideo.play().catch(e => {
+                    console.log('اتوماتیک پلی شدن ممکن نیست:', e);
+                });
+            }, 500);
+        }
+
+        // آپدیت بخش لایک
+        function updateLikeSection(video) {
+            const likeBtn = document.getElementById('likeBtn');
+            const dislikeBtn = document.getElementById('dislikeBtn');
+            const likeCount = document.getElementById('likeCount');
+            const dislikeCount = document.getElementById('dislikeCount');
+            const likesProgress = document.getElementById('likesProgress');
+            const likesPercentage = document.getElementById('likesPercentage');
+            const likeBtnText = document.getElementById('likeBtnText');
+            const dislikeBtnText = document.getElementById('dislikeBtnText');
+            
+            likeCount.textContent = video.likes;
+            dislikeCount.textContent = video.dislikes;
+            
+            // آپدیت متن دکمه‌ها
+            likeBtnText.textContent = video.userLike === true ? 'لایک کردید' : 'لایک';
+            dislikeBtnText.textContent = video.userLike === false ? 'دیسلایک کردید' : 'دیسلایک';
+            
+            // محاسبه درصد لایک
+            const total = video.likes + video.dislikes;
+            const likePercent = total > 0 ? Math.round((video.likes / total) * 100) : 0;
+            likesProgress.style.width = likePercent + '%';
+            likesPercentage.textContent = likePercent + '%';
+            
+            // آپدیت وضعیت دکمه‌ها
+            likeBtn.classList.toggle('active', video.userLike === true);
+            dislikeBtn.classList.toggle('active', video.userLike === false);
+            
+            // آپدیت دکمه‌های action
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                if (btn.querySelector('.fa-thumbs-up')) {
+                    btn.classList.toggle('active', video.userLike === true);
+                }
+                if (btn.querySelector('.fa-thumbs-down')) {
+                    btn.classList.toggle('active', video.userLike === false);
+                }
+            });
+        }
+
+        // لایک کردن ویدیو
+        function likeVideo() {
+            if (!currentVideoId) return;
+            
+            const video = sampleVideos.find(v => v.id === currentVideoId);
+            const likeBtn = document.getElementById('likeBtn').querySelector('i');
+            const likeBtnText = document.getElementById('likeBtnText');
+            
+            if (video.userLike === true) {
+                // اگر قبلاً لایک کرده، لایک رو برمی‌داره
+                video.likes--;
+                video.userLike = null;
+                likeBtn.classList.remove('like-animation');
+                likeBtnText.textContent = 'لایک';
+            } else {
+                // لایک جدید
+                if (video.userLike === false) {
+                    video.dislikes--; // اگر قبلاً دیسلایک کرده، دیسلایک رو برمی‌داره
+                }
+                video.likes++;
+                video.userLike = true;
+                likeBtn.classList.add('like-animation');
+                setTimeout(() => likeBtn.classList.remove('like-animation'), 400);
+                likeBtnText.textContent = 'لایک کردید';
+            }
+            
+            updateLikeSection(video);
+            renderVideos(); // آپدیت کل صفحه
+            saveToLocalStorage();
+        }
+
+        // دیسلایک کردن ویدیو
+        function dislikeVideo() {
+            if (!currentVideoId) return;
+            
+            const video = sampleVideos.find(v => v.id === currentVideoId);
+            const dislikeBtn = document.getElementById('dislikeBtn').querySelector('i');
+            const dislikeBtnText = document.getElementById('dislikeBtnText');
+            
+            if (video.userLike === false) {
+                // اگر قبلاً دیسلایک کرده، دیسلایک رو برمی‌داره
+                video.dislikes--;
+                video.userLike = null;
+                dislikeBtn.classList.remove('like-animation');
+                dislikeBtnText.textContent = 'دیسلایک';
+            } else {
+                // دیسلایک جدید
+                if (video.userLike === true) {
+                    video.likes--; // اگر قبلاً لایک کرده، لایک رو برمی‌داره
+                }
+                video.dislikes++;
+                video.userLike = false;
+                dislikeBtn.classList.add('like-animation');
+                setTimeout(() => dislikeBtn.classList.remove('like-animation'), 400);
+                dislikeBtnText.textContent = 'دیسلایک کردید';
+            }
+            
+            updateLikeSection(video);
+            renderVideos(); // آپدیت کل صفحه
+            saveToLocalStorage();
+        }
+
+        // بارگذاری کامنت‌ها
+        function loadComments(videoId) {
+            const commentList = document.getElementById('commentList');
+            const commentsCount = document.getElementById('commentsCount');
+            const videoComments = sampleComments.filter(comment => comment.videoId === videoId);
+            
+            commentList.innerHTML = '';
+            commentsCount.textContent = videoComments.length;
+            
+            videoComments.forEach(comment => {
+                const commentItem = `
+                    <div class="comment-item">
+                        <div class="comment-avatar">
+                            <img src="${comment.avatar}" alt="${comment.author}">
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-author">${comment.author}</div>
+                            <div class="comment-text">${comment.text}</div>
+                            <div class="comment-meta">
+                                <span>${comment.date}</span>
+                                <div class="comment-like ${comment.userLiked ? 'liked' : ''}" onclick="likeComment(${comment.id})">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span>${comment.likes}</span>
+                                </div>
+                                <a href="#" class="reply-btn">پاسخ</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                commentList.innerHTML += commentItem;
+            });
+        }
+
+        // لایک کامنت
+        function likeComment(commentId) {
+            const comment = sampleComments.find(c => c.id === commentId);
+            if (!comment) return;
+            
+            if (comment.userLiked) {
+                comment.likes--;
+                comment.userLiked = false;
+            } else {
+                comment.likes++;
+                comment.userLiked = true;
+            }
+            
+            loadComments(currentVideoId);
+            saveToLocalStorage();
+        }
+
+        // اضافه کردن کامنت
+        function addComment() {
+            const commentInput = document.getElementById('commentInput');
+            const text = commentInput.value.trim();
+            
+            if (!text) return;
+            
+            const newComment = {
+                id: sampleComments.length + 1,
+                videoId: currentVideoId,
+                author: "شما",
+                avatar: "https://i.pinimg.com/736x/77/fd/27/77fd27e31b32ddd1cf812df2ad398a1e.jpg",
+                text: text,
+                likes: 0,
+                userLiked: false,
+                date: "همین حالا"
+            };
+            
+            sampleComments.push(newComment);
+            commentInput.value = '';
+            
+            loadComments(currentVideoId);
+            saveToLocalStorage();
+            
+            // نمایش پیام موفقیت
+            showNotification('دیدگاه شما با موفقیت ثبت شد.');
+        }
+
+        function cancelComment() {
+            document.getElementById('commentInput').value = '';
+        }
+
+        // مرتب‌سازی کامنت‌ها
+        function sortComments() {
+            const sortBy = document.getElementById('sortComments').value;
+            
+            if (sortBy === 'newest') {
+                sampleComments.sort((a, b) => b.id - a.id);
+            } else if (sortBy === 'popular') {
+                sampleComments.sort((a, b) => b.likes - a.likes);
+            }
+            
+            loadComments(currentVideoId);
+        }
+
+        // اشتراک در کانال
+        function toggleSubscribe() {
+            const subscribeBtn = document.getElementById('subscribeBtn');
+            isSubscribed = !isSubscribed;
+            
+            if (isSubscribed) {
+                subscribeBtn.textContent = 'مشترک شدید';
+                subscribeBtn.classList.add('subscribed');
+                showNotification('شما با موفقیت در کانال مشترک شدید.');
+            } else {
+                subscribeBtn.textContent = 'مشترک شوید';
+                subscribeBtn.classList.remove('subscribed');
+            }
+            
+            saveToLocalStorage();
+        }
+
+        // ذخیره در لیست تماشای بعدی
+        function saveToWatchLater() {
+            if (!currentVideoId) return;
+            
+            const video = sampleVideos.find(v => v.id === currentVideoId);
+            if (!userData.watchLater.includes(video.id)) {
+                userData.watchLater.push(video.id);
+                showNotification('ویدیو به لیست تماشای بعدی اضافه شد.');
+            } else {
+                userData.watchLater = userData.watchLater.filter(id => id !== video.id);
+                showNotification('ویدیو از لیست تماشای بعدی حذف شد.');
+            }
+            
+            saveToLocalStorage();
+        }
+
+        // اشتراک‌گذاری ویدیو
+        function shareVideo() {
+            if (!currentVideoId) return;
+            
+            const video = sampleVideos.find(v => v.id === currentVideoId);
+            const shareUrl = window.location.href + '?video=' + video.id;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: video.title,
+                    text: 'این ویدیو رو ببینید!',
+                    url: shareUrl,
+                })
+                .then(() => console.log('اشتراک‌گذاری موفقیت‌آمیز بود'))
+                .catch((error) => console.log('خطا در اشتراک‌گذاری:', error));
+            } else {
+                // کپی لینک به کلیپ‌بورد
+                navigator.clipboard.writeText(shareUrl)
+                    .then(() => showNotification('لینک ویدیو کپی شد!'))
+                    .catch(() => {
+                        // روش قدیمی
+                        const tempInput = document.createElement('input');
+                        tempInput.value = shareUrl;
+                        document.body.appendChild(tempInput);
+                        tempInput.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(tempInput);
+                        showNotification('لینک ویدیو کپی شد!');
+                    });
+            }
+        }
+
+        // گزارش ویدیو
+        function reportVideo() {
+            const reportReasons = [
+                'محتوای نامناسب',
+                'هرزنامه یا فریب‌آمیز',
+                'حریم خصوصی من را نقض می‌کند',
+                'محتوای خشونت‌آمیز',
+                'سایر موارد'
+            ];
+            
+            let reportMessage = "لطفا دلیل گزارش این ویدیو را انتخاب کنید:\n\n";
+            reportReasons.forEach((reason, index) => {
+                reportMessage += `${index + 1}. ${reason}\n`;
+            });
+            
+            const reasonNumber = prompt(reportMessage);
+            if (reasonNumber && reasonNumber >= 1 && reasonNumber <= reportReasons.length) {
+                showNotification('گزارش شما ثبت شد. از همکاری شما سپاسگزاریم.');
+                saveToLocalStorage();
+            }
+        }
+
+        // تغییر سرعت پخش
+        function changePlaybackSpeed(speed) {
+            const video = document.getElementById('mainVideo');
+            playbackSpeed = speed;
+            video.playbackRate = speed;
+            
+            showNotification(`سرعت پخش: ${speed}x`);
+        }
+
+        // کنترل پخش
+        function togglePlay() {
+            const video = document.getElementById('mainVideo');
+            const playIcon = document.getElementById('playIcon');
+            
+            if (video.paused) {
+                video.play();
+                playIcon.className = 'fas fa-pause';
+                isPlaying = true;
+            } else {
+                video.pause();
+                playIcon.className = 'fas fa-play';
+                isPlaying = false;
+            }
+        }
+
+        // کنترل صدا
+        function toggleMute() {
+            const video = document.getElementById('mainVideo');
+            const volumeIcon = document.getElementById('volumeIcon');
+            
+            video.muted = !video.muted;
+            isMuted = video.muted;
+            
+            if (video.muted) {
+                volumeIcon.className = 'fas fa-volume-mute';
+            } else {
+                volumeIcon.className = 'fas fa-volume-up';
+            }
+        }
+
+        // فول‌اسکرین
+        function toggleFullscreen() {
+            const videoPlayer = document.getElementById('videoPlayer');
+            
+            if (!document.fullscreenElement) {
+                if (videoPlayer.requestFullscreen) {
+                    videoPlayer.requestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // اسکرول در ویدیو
+        function seekVideo(event) {
+            const video = document.getElementById('mainVideo');
+            const progressBar = event.currentTarget;
+            const clickPosition = event.offsetX;
+            const progressBarWidth = progressBar.offsetWidth;
+            const seekTime = (clickPosition / progressBarWidth) * video.duration;
+            
+            video.currentTime = seekTime;
+        }
+
+        // نمایش نوتیفیکیشن
+        function showNotification(message) {
+            // حذف نوتیفیکیشن قبلی اگر وجود داشته باشد
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // ایجاد نوتیفیکیشن جدید
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: var(--primary);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px var(--shadow);
+                z-index: 9999;
+                animation: slideInRight 0.3s ease;
+                font-weight: 500;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // حذف خودکار بعد از 3 ثانیه
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease forwards';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // اضافه کردن استایل برای انیمیشن نوتیفیکیشن
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // ذخیره در localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('megaEditVideos', JSON.stringify(sampleVideos));
+            localStorage.setItem('megaEditComments', JSON.stringify(sampleComments));
+            localStorage.setItem('megaEditUserData', JSON.stringify(userData));
+        }
+
+        // بارگذاری از localStorage
+        function loadFromLocalStorage() {
+            const savedVideos = localStorage.getItem('megaEditVideos');
+            const savedComments = localStorage.getItem('megaEditComments');
+            const savedUserData = localStorage.getItem('megaEditUserData');
+            
+            if (savedVideos) {
+                sampleVideos = JSON.parse(savedVideos);
+            }
+            if (savedComments) {
+                sampleComments = JSON.parse(savedComments);
+            }
+            if (savedUserData) {
+                userData = JSON.parse(savedUserData);
+                isSubscribed = userData.subscribed;
+            }
+        }
+
+        // مقداردهی اولیه
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromLocalStorage();
+            initTheme();
+            renderVideos();
+
+            // کنترل پیشرفت ویدیو
+            const video = document.getElementById('mainVideo');
+            const progress = document.getElementById('progress');
+            const currentTime = document.getElementById('currentTime');
+            const duration = document.getElementById('duration');
+            
+            video.addEventListener('timeupdate', function() {
+                const percent = (video.currentTime / video.duration) * 100;
+                progress.style.width = percent + '%';
+                
+                // آپدیت زمان
+                currentTime.textContent = formatTime(video.currentTime);
+                duration.textContent = formatTime(video.duration);
+            });
+            
+            video.addEventListener('loadedmetadata', function() {
+                duration.textContent = formatTime(video.duration);
+                video.playbackRate = playbackSpeed;
+            });
+            
+            video.addEventListener('play', function() {
+                document.getElementById('playIcon').className = 'fas fa-pause';
+                isPlaying = true;
+            });
+            
+            video.addEventListener('pause', function() {
+                document.getElementById('playIcon').className = 'fas fa-play';
+                isPlaying = false;
+            });
+            
+            video.addEventListener('volumechange', function() {
+                const volumeIcon = document.getElementById('volumeIcon');
+                if (video.muted || video.volume === 0) {
+                    volumeIcon.className = 'fas fa-volume-mute';
+                } else if (video.volume < 0.5) {
+                    volumeIcon.className = 'fas fa-volume-down';
+                } else {
+                    volumeIcon.className = 'fas fa-volume-up';
+                }
+            });
+            
+            // جستجو
+            const searchBox = document.querySelector('.search-box');
+            searchBox.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch(this.value);
+                }
+            });
+            
+            document.querySelector('.search-btn').addEventListener('click', function() {
+                performSearch(searchBox.value);
+            });
+        });
+
+        // جستجو
+        function performSearch(query) {
+            if (!query.trim()) return;
+            
+            const filteredVideos = sampleVideos.filter(video => 
+                video.title.toLowerCase().includes(query.toLowerCase()) ||
+                video.description.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            if (filteredVideos.length === 0) {
+                showNotification('نتیجه‌ای برای جستجوی شما یافت نشد.');
+                return;
+            }
+            
+            // نمایش ویدیوهای جستجو شده
+            const videosGrid = document.getElementById('videosGrid');
+            videosGrid.innerHTML = '';
+            
+            filteredVideos.forEach(video => {
+                const likePercentage = video.likes + video.dislikes > 0 ? 
+                    Math.round((video.likes / (video.likes + video.dislikes)) * 100) : 0;
+                
+                const videoCard = `
+                    <div class="video-card" onclick="playVideo(${video.id})">
+                        <div class="thumbnail">
+                            <img src="${video.thumbnail}" alt="${video.title}" loading="lazy">
+                            <div class="duration">${video.duration}</div>
+                            <div class="play-overlay">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">${video.title}</div>
+                            <div class="video-meta">
+                                <span>${video.views} بازدید</span>
+                                <span>${video.date}</span>
+                            </div>
+                            <div class="video-stats">
+                                <div class="stat ${video.userLike === true ? 'liked' : ''}">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    ${video.likes}
+                                </div>
+                                <div class="stat ${video.userLike === false ? 'disliked' : ''}">
+                                    <i class="fas fa-thumbs-down"></i>
+                                    ${video.dislikes}
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-chart-bar"></i>
+                                    ${likePercentage}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                videosGrid.innerHTML += videoCard;
+            });
+            
+            showNotification(`${filteredVideos.length} نتیجه برای "${query}" یافت شد.`);
+        }
+
+        // فرمت زمان
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        }
+    </script>
+</body>
+</html>
